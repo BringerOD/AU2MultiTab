@@ -1,0 +1,71 @@
+<template>
+
+  <div style.bind="cardBoxStyles">
+
+    <div ref="workspaceTabs" class="workspaceTab" mouseover.delegate="activateScrollWheel($event)"
+      mouseout.delegate="enableScroll()">
+      <ul ref="scroll" class="nav tab-nowrap scrollbar"
+        class.bind="scroll.scrollWidth > scroll.clientWidth ? 'scroll-width' : ''" sortable.bind="sortableOptions"
+        sortable-end.delegate="userDragEnded($event)">
+        <li id="${'tab-' + key}" data-toggle="tooltip" data-placement="top"
+          title="${workspaces.findWorkspace(key).displayName}"
+          class.bind="workspaces.findWorkspace(key).needsWarning ? 'alert-danger error-tab' : workspaces.findWorkspace(key).isActive ? 'bg-gray-200 tab' : 'tab'"
+          class=" ${workspaces.findWorkspace(key).metaData.IsDelimiter ? 'mr-3' : ''} "
+          repeat.for="key of workspaces.workSpacesTabOrdering" mouseup.delegate="handleClickEvents($event, key)"
+          contextmenu.delegate="attachRightClickMenu($event, key)">
+          <a class="d-flex align-items-center ${workspaces.findWorkspace(key).isActive ? 'active' : ''}"
+            href.bind="workspaces.findWorkspace(key).href">
+            <i
+              class="tab-icon ${workspaces.findWorkspace(key) != undefined && workspaces.findWorkspace(key).icon != undefined ? workspaces.findWorkspace(key).icon : ''}"></i>
+            <span
+              class="${workspaces.findWorkspace(key).isActive ? 'text-nowrap' : 'abbr'}">${workspaces.findWorkspace(key).displayName}</span>
+            <!-- Draft Badge -->
+            <span if.bind="workspaces.findWorkspace(key).draftItem && !workspaces.findWorkspace(key).needsWarning"
+              class="ml-1 badge badge-warning">Draft</span>
+            <!-- Historical item / Old Badge -->
+            <span if.bind="workspaces.findWorkspace(key).isHistorical && !workspaces.findWorkspace(key).needsWarning"
+              class="ml-1 badge ${historicalBadgeColor}">${historicalItemBadge}</span>
+            <span class="tab-icon closing-tab" if.bind="!workspaces.findWorkspace(key).needsWarning"
+              click.trigger="closeWorkspace(workspaces.findWorkspace(key))">
+              <i aria-hidden="true" class="fa fa-times fa-sm"></i>
+            </span>
+            <button if.bind="workspaces.findWorkspace(key).needsWarning" type="button"
+              click.delegate="workspaces.findWorkspace(key).saveModel()"
+              class="btn btn-primary btn-sm mx-1 d-inline-block  py-0">Save</button>
+            <button if.bind="workspaces.findWorkspace(key).needsWarning" type="button"
+              click.delegate="closeWorkspace(workspaces.findWorkspace(key))"
+              class="btn btn-secondary d-inline-block mr-1 btn-sm py-0">Close Without Saving</button>
+            <button if.bind="workspaces.findWorkspace(key).needsWarning" type="button"
+              click.delegate="cancelWarning(workspaces.findWorkspace(key))"
+              class="btn btn-light d-inline-block  btn-sm py-0">Cancel</button>
+          </a>
+        </li>
+      </ul>
+      <div id="cntnr">
+        <ul id="items" class.bind="workspaces.findWorkspace(key)">
+          <li click.trigger="closeThisTab()" class="liRightClick">
+            Close this tab</li>
+          <li click.delegate="closeAllRightTabs()" class="liRightClick">Close all right tabs</li>
+          <li click.delegate="closeAllButThisTab()" class="liRightClick">Close all but this tab</li>
+          <li click.delegate="closeAllTabs()" class="liRightClick">
+            Close all tabs</li>
+        </ul>
+      </div>
+      <span mouseover.delegate="setScrollDirection(false)" mouseout.delegate="stopScrolling()"
+        mousedown.delegate="shellTabMouseDown()" mouseup.delegate="shellTabMouseUp()" class="scrollLeft pointer"
+        class.bind="workspaces.workSpacesTabOrdering[0].getBoundingClientRect().x === scroll.getBoundingClientRect().x ? 'disable' : ''"
+        show.bind="scroll.scrollWidth > scroll.clientWidth"><i class="fas fa-angle-left"></i></span>
+      <span mouseover.delegate="setScrollDirection(true)" mouseout.delegate="stopScrolling()"
+        mousedown.delegate="shellTabMouseDown()" mouseup.delegate="shellTabMouseUp()" class="scrollRight pointer"
+        show.bind="scroll.scrollWidth > scroll.clientWidth"><i class="fas fa-angle-right"></i></span>
+    </div>
+
+    <div repeat.for="workspace of workspaces.workSpaces">
+      <div show.bind="workspace.isActive">
+        <compose containerless view-model="./modules/${workspace.section}/${workspace.viewModel}"
+          model.bind="workspace" />
+      </div>
+    </div>
+  </div>
+
+</template>
