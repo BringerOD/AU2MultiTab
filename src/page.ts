@@ -10,10 +10,10 @@ export class Page implements IRouteViewModel {
 
   async load(params: Params, next: RouteNode, current: RouteNode) {
     
+    console.log(params);
     var route = this.viewLocator.getView(params.module!, params.page!)
-    await route?.view;
-     
-    this.view = "TestPage";
+        
+    this.view = await route?.view;
     
     console.log(this.view);
   }

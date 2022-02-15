@@ -1,6 +1,7 @@
 
 // import { inject, Router, singleton } from 'aurelia';
 // import * as _ from 'lodash';
+// import { Workspaces } from './infrastructure';
 // import { Workspace } from './infrastructure/workspaces/workspace';
 
 // @inject()
@@ -15,17 +16,17 @@
 //   sortableOptions: SortableOptions = {
 //     handle: 'a.d-flex.align-items-center',
 //   };
-//   private workspaceTabs: Element;
-//   private scroll: Element;
+//   private workspaceTabs: Element | undefined;
+//   private scroll: Element | undefined;
 //   private isWorkspaceScrolling: boolean;
-//   private scrolDirection: number;
-//   private scrollingInterval: NodeJS.Timeout;
-//   private logger: Logger;
+//   private scrolDirection: number | undefined;
+//   private scrollingInterval: NodeJS.Timeout | undefined;
+  
 
 //   private cardBoxStyles: any;
 
 //   constructor(router: Router) {
-//     this.logger = getLogger(this.constructor.name);
+    
 //     this.router = router;
 //     this.header = 'Welcome!';
 //     this.workspaces = new Workspaces(this.router);

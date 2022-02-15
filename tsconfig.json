@@ -2,15 +2,17 @@
   "compilerOptions": {
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "module": "esnext",
     "moduleResolution": "node",
     "skipLibCheck": true,
-    "target": "ES2017",
+    "target": "es2018",
+    "module": "esnext",
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "strict": true,
   },
   "include": [
+    "test",
     "src"
   ],
   "files": [

@@ -1,4 +1,5 @@
 import { valueConverter } from "aurelia";
+import { Workspace } from "..";
 
 @valueConverter("mapViewPathToViewModel")
 export class MapViewPathToViewModel {
